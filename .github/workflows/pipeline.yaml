@@ -14,10 +14,18 @@ jobs:
     - name: Build project with Maven
       run: mvn -B clean package 
     - run: ls -la && ls -la target/
+    - uses: actions/upload-artifact@v1
+      with:
+        name: app-artifact
+        path: target/lamp-service.jar
   build-image:
     runs-on: ubuntu-latest
     needs: build-artifact
     steps:
+    - uses: actions/download-artifact@v1
+      with:
+          name: app-artifact
+          path: target/
     - name: Login to DockerHub
       uses: docker/login-action@v1 
       with:
