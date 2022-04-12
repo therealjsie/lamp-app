@@ -1,0 +1,18 @@
+server:
+  applicationConnectors:
+    - type: http
+      port: ${APP_PORT:-8080}
+logging:
+  level: INFO
+  loggers:
+    leanix.net: DEBUG
+database:
+  driverClass: org.postgresql.Driver
+  user: lamp_user@psql-lamp
+  password: rv[dK&<mZ3)I8kvq
+  url: jdbc:postgresql://psql-lamp.postgres.database.azure.com/psqldb-lamp
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  validationQuery: "SELECT 1"
+  validationQueryTimeout: 3s
