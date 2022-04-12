@@ -19,6 +19,7 @@ jobs:
         path: target/lamp-service.jar
   build-image:
     runs-on: ubuntu-latest
+    needs: build-artifact
     steps:
     - name: Login to DockerHub
       uses: docker/login-action@v1 
