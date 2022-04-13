@@ -2,6 +2,10 @@ on:
   push:
     branches:
       - 'main'
+env:
+  CLUSTER_NAME: aks-lamp-local
+  CLUSTER_RESOURCE_GROUP: lamp-service-local
+  NAMESPACE: lamp-service
 jobs:
   build-artifact:
     runs-on: ubuntu-latest  
@@ -39,3 +43,31 @@ jobs:
         context: .
         push: true
         tags: shadadelic/lamp-service:${{ github.run_attempt }}
+  # Based on the following tutorial
+  # Ref.: https://docs.microsoft.com/en-us/azure/aks/kubernetes-action
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+    needs: build-image
+    environment: dev
+    steps:
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+    - run: |
+        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
+  #   - uses: azure/k8s-deploy@v1
+  #     with:
+  #       manifests: |
+  #         ${{ github.workspace }}/manifests/deployment.yaml
+  #         ${{ github.workspace }}/manifests/service.yaml
+  #       images: |
+  #         ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+  #       namespace: ${{ env.NAMESPACE }}    
+  # deploy-to-prod:
+  #   runs-on: ubuntu-latest
+  #   needs: deploy-to-env
+  #   environment: prod
+  #   steps:
+  #     - run: echo "Hello, World"
