@@ -59,8 +59,8 @@ jobs:
     - uses: azure/k8s-deploy@v1
       with:
         manifests: |
-          ${{ github.workspace }}/manifests/aks/deployment.yaml
-          ${{ github.workspace }}/manifests/aks/service.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/deployment.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/service.yaml
         images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_attempt }}-${{ github.sha }}
         namespace: ${{ env.APP_NAME }}
   # deploy-to-prod:
