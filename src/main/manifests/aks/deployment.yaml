@@ -42,7 +42,7 @@ spec:
             name: lamp-service-configmap
         - name: lamp-key-vault
           csi:
-            driver: bsecrets-store.csi.k8s.io
+            driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
               secretProviderClass: "azure-secrets-csi-provider"
