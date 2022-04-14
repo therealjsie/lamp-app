@@ -23,6 +23,9 @@ spec:
         - name: config-volume
           mountPath: /application/config.yml
           subPath: config.yml
+        - name: lamp-key-vault
+          mountPath: "/mnt/secrets"
+          readOnly: true
         env:
           - name: DATABASE_CONNECTION_STRING
             valueFrom:
