@@ -2,23 +2,47 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: lamp-service
-  name: lamp-service
+    app: lamp
+  name: lamp
+  namespace: lamp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: lamp-service
-  strategy: {}
+      app: lamp
   template:
     metadata:
       labels:
-        app: lamp-service
+        app: lamp
     spec:
       containers:
       - image: shadadelic/lamp-service:1
-        name: lamp-service
-        resources: {}
+        name: lamp
+        ports:
+        - name: "http"
+          containerPort: 8080
+          protocol: TCP
+        - name: "admin"
+          containerPort: 8081
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /admin/healthcheck
+            port: 8081
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /admin/healthcheck
+            port: 8081
+          initialDelaySeconds: 10
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
         volumeMounts:
         - name: config-volume
           mountPath: /application/config.yml
@@ -42,7 +66,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: lamp-service-configmap
+            name: lamp-configmap
         - name: lamp-key-vault
           csi:
             driver: secrets-store.csi.k8s.io

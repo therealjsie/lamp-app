@@ -3,8 +3,6 @@ on:
     branches:
       - 'main'
 env:
-  CLUSTER_NAME: aks-lamp-local
-  CLUSTER_RESOURCE_GROUP: lamp-service-local
   APP_NAME: lamp
 jobs:
   build-artifact:
@@ -54,18 +52,36 @@ jobs:
     - uses: azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: ${{ env.CLUSTER_NAME }}
-        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+        cluster-name: aks-lamp-development
+        resource-group: lamp-service-development
     - uses: azure/k8s-deploy@v1
       with:
         manifests: |
           ${{ github.workspace }}/src/main/manifests/aks/deployment.yaml
           ${{ github.workspace }}/src/main/manifests/aks/configmap.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/service.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/ingress-http.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/ingress-admin.yaml
         images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_attempt }}-${{ github.sha }}
         namespace: ${{ env.APP_NAME }}
-  # deploy-to-prod:
-  #   runs-on: ubuntu-latest
-  #   needs: deploy-to-env
-  #   environment: prod
-  #   steps:
-  #     - run: echo "Hello, World"
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: deploy-to-dev
+    environment: prod
+    steps:
+    - uses: actions/checkout@v2
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.AZURE_CREDENTIALS }}'
+        cluster-name: aks-lamp-production
+        resource-group: lamp-service-production
+    - uses: azure/k8s-deploy@v1
+      with:
+        manifests: |
+          ${{ github.workspace }}/src/main/manifests/aks/deployment.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/configmap.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/service.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/ingress-http.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/ingress-admin.yaml
+        images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_attempt }}-${{ github.sha }}
+        namespace: ${{ env.APP_NAME }}

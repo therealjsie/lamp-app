@@ -1,10 +1,14 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: lamp-service-configmap
+  name: lamp-configmap
+  namespace: lamp
 data:
   config.yml: |
     server:
+      # Change admin context path as both http and admin endpoint are available 
+      # under the same context through the ingress controller.
+      adminContextPath: /admin
       applicationConnectors:
         - type: http
           port: ${APP_PORT:-8080}
