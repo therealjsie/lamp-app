@@ -40,7 +40,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_attempt }}-${{ github.sha }}
+        tags: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_number }}-${{ github.sha }}
   # Based on the following tutorial
   # Ref.: https://docs.microsoft.com/en-us/azure/aks/kubernetes-action
   deploy-to-dev:
@@ -62,7 +62,7 @@ jobs:
           ${{ github.workspace }}/src/main/manifests/aks/service.yaml
           ${{ github.workspace }}/src/main/manifests/aks/ingress-http.yaml
           ${{ github.workspace }}/src/main/manifests/aks/ingress-admin.yaml
-        images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_attempt }}-${{ github.sha }}
+        images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_number }}-${{ github.sha }}
         namespace: ${{ env.APP_NAME }}
   deploy-to-prod:
     runs-on: ubuntu-latest
