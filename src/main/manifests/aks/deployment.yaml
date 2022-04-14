@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: lamp-service
+  name: lamp-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lamp-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: lamp-service
+    spec:
+      containers:
+      - image: shadadelic/lamp-service:1
+        name: lamp-service
+        resources: {}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /application/config.yml
+          subPath: config.yml
+        env:
+          - name: DATABASE_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: database-config
+                key: database-connection-string
+                optional: false 
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-config
+                key: database-password
+                optional: false 
+      volumes:
+        - name: lamp-key-vault
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-secrets-csi-provider"
