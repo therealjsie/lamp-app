@@ -60,7 +60,7 @@ jobs:
       with:
         manifests: |
           ${{ github.workspace }}/src/main/manifests/aks/deployment.yaml
-          ${{ github.workspace }}/src/main/manifests/aks/service.yaml
+          ${{ github.workspace }}/src/main/manifests/aks/configmap.yaml
         images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_attempt }}-${{ github.sha }}
         namespace: ${{ env.APP_NAME }}
   # deploy-to-prod:
