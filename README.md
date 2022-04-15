@@ -33,11 +33,10 @@ The servers http port can be set via the env var `APP_PORT`.
 You can for example start the application exposing port `9090` like this:
 `APP_PORT=9090 java -jar target/dropwizard-example-1.0-SNAPSHOT.jar server config.yml`
 
-# Accessing the service after deployment
+# Accessing the service after deployment to AKS
 
-The provided service is currently only accessible through a public IP. The IP is
-provisioned through an Azure load balancer. The health check can be accessed
-like this:
+The provided service is accessible through public IP. The IP is provisioned
+through an Azure load balancer. The health check can be accessed like this:
 
 ```
 export SERVICE_IP=$(kubectl get ingress lamp-http -n lamp -o jsonpath={.status.loadBalancer.ingress[0].ip})
