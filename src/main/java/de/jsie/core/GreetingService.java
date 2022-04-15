@@ -1,4 +1,4 @@
-package leanix.net.core;
+package de.jsie.core;
 
 import org.jdbi.v3.core.Jdbi;
 

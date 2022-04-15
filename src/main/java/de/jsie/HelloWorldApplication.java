@@ -1,13 +1,13 @@
-package leanix.net;
+package de.jsie;
 
+import de.jsie.core.GreetingService;
+import de.jsie.resources.HelloWorldResource;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import leanix.net.core.GreetingService;
-import leanix.net.resources.HelloWorldResource;
 import org.jdbi.v3.core.Jdbi;
 
 public class HelloWorldApplication extends Application<AppConfiguration> {

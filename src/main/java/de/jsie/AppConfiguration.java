@@ -1,4 +1,4 @@
-package leanix.net;
+package de.jsie;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
