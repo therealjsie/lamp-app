@@ -83,5 +83,5 @@ jobs:
           ${{ github.workspace }}/src/main/manifests/aks/service.yaml
           ${{ github.workspace }}/src/main/manifests/aks/ingress-http.yaml
           ${{ github.workspace }}/src/main/manifests/aks/ingress-admin.yaml
-        images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_attempt }}-${{ github.sha }}
+        images: shadadelic/${{ env.APP_NAME }}-service:${{ github.run_number }}-${{ github.sha }}
         namespace: ${{ env.APP_NAME }}
