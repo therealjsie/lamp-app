@@ -18,7 +18,7 @@ data:
         leanix.net: DEBUG
     database:
       driverClass: org.postgresql.Driver
-      user: lamp_user@psql-lamp-local
+      user: ${DATABASE_USER}
       password: ${DATABASE_PASSWORD}
       # e.g. jdbc:postgresql://psql-lamp-local.postgres.database.azure.com/psqldb-lamp
       url: ${DATABASE_CONNECTION_STRING}

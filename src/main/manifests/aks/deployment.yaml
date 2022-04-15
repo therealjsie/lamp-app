@@ -57,6 +57,12 @@ spec:
                 name: database-config
                 key: database-connection-string
                 optional: false 
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: database-config
+                key: database-user
+                optional: false 
           - name: DATABASE_PASSWORD
             valueFrom:
               secretKeyRef:
